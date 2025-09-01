@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background: #f9f9f9;
+}
+
+header {
+  background: #003366;
+  color: white;
+  padding: 20px;
+}
+
+footer {
+  margin-top: 20px;
+  padding: 10px;
+  background: #ddd;
+}
+
+.btn {
+  display: inline-block;
+  margin: 20px;
+  padding: 10px 20px;
+  background: #0077cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.subject-list {
+  list-style: none;
+  padding: 0;
+}
+
+.subject-list li {
+  margin: 15px;
+}
+
+.question {
+  margin: 20px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #ccc;
+}
