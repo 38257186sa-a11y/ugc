@@ -5,54 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz | UGC Practice</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #quiz-title { text-align: center; margin-bottom: 20px; }
-    .question { margin: 20px 0; }
-    .option-btn {
-      display: block;
-      width: 100%;
-      margin: 5px 0;
-      padding: 10px;
-      border: 1px solid #444;
-      border-radius: 5px;
-      background: #f4f4f4;
-      cursor: pointer;
-      text-align: left;
-      transition: 0.2s;
-    }
-    .option-btn:hover { background: #e3e3e3; }
-    #result { margin-top: 20px; font-size: 18px; font-weight: bold; }
-
-    /* Floating window style */
-    #float-search {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 350px;
-      max-height: 400px;
-      background: #fff;
-      border: 2px solid #444;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      padding: 10px;
-      display: none;
-      overflow-y: auto;
-      z-index: 9999;
-    }
-    #float-search h3 { margin: 5px 0; }
-    #close-search {
-      float: right;
-      cursor: pointer;
-      font-weight: bold;
-      color: red;
-    }
-  </style>
 </head>
 <body>
-  <h2 id="quiz-title">UGC Practice Quiz</h2>
-  <div id="quiz-container"></div>
-  <div id="result"></div>
+  <header>
+    <h2 id="quiz-title">UGC Practice Quiz</h2>
+  </header>
+
+  <main>
+    <div id="quiz-container"></div>
+    <div id="result"></div>
+  </main>
 
   <!-- Floating Search Window -->
   <div id="float-search">
@@ -61,6 +23,10 @@
     <div id="wiki-result">Loading...</div>
     <p><a id="google-link" href="#" target="_blank">🔎 Search on Google</a></p>
   </div>
+
+  <footer>
+    <a href="subjects.html" class="btn">⬅ Back to Subjects</a>
+  </footer>
 
   <script src="script.js"></script>
 </body>
