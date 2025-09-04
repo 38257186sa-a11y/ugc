@@ -1,112 +1,185 @@
-/* Global Layout */
+:root {
+  --bg: #f6f8fb;
+  --card: #fff;
+  --accent: #1557ff;
+  --muted: #6b7280;
+  --shadow: 0 6px 18px rgba(16, 24, 40, 0.08);
+  --radius: 12px;
+  --maxw: 900px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial;
   margin: 0;
-  padding: 0;
-  text-align: center;
-  background: #f9f9f9;
+  background: var(--bg);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: var(--maxw);
+  margin: 28px auto;
+  padding: 18px;
 }
 
 header {
-  background: #003366;
-  color: white;
+  margin-bottom: 14px;
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.card {
+  background: var(--card);
   padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+label {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.btn {
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #e6eefc;
+  color: #0b1220;
+  font-weight: 600;
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#questionBox {
+  margin-top: 8px;
+}
+
+.question {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.choice {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ef;
+  background: #fff;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.choice:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.06);
+}
+
+.choice.selected {
+  background: #eef6ff;
+  border-color: rgba(21, 87, 255, 0.25);
+}
+
+.choice.correct {
+  background: #e6ffef;
+  border-color: #1db978;
+}
+
+.choice.wrong {
+  background: #fff0f0;
+  border-color: #ff6b6b;
+}
+
+.quiz-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  align-items: center;
+}
+
+.progress {
+  height: 8px;
+  background: #eef2ff;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+#progressFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #35a3ff);
+}
+
+.breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.result-card {
+  background: #f5f7fa;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+small {
+  color: var(--muted);
 }
 
 footer {
-  margin-top: 20px;
-  padding: 10px;
-  background: #ddd;
+  margin-top: 10px;
+  text-align: center;
 }
 
-/* Buttons */
-.btn {
-  display: inline-block;
-  margin: 20px;
-  padding: 10px 20px;
-  background: #0077cc;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: 0.3s;
-}
-.btn:hover {
-  background: #005fa3;
-}
-
-/* Subject list */
-.subject-list {
-  list-style: none;
-  padding: 0;
-}
-.subject-list li {
-  margin: 15px;
-}
-
-/* Question Card */
-.question {
-  margin: 20px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  max-width: 600px;
-  text-align: left;
-}
-.question p {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* Option buttons (Telegram style) */
-.option-btn {
-  display: block;
-  width: 100%;
-  margin: 8px 0;
-  padding: 12px;
-  border: 1px solid #444;
-  border-radius: 6px;
-  background: #f4f4f4;
-  cursor: pointer;
-  text-align: left;
-  font-size: 16px;
-  transition: 0.2s;
-}
-.option-btn:hover {
-  background: #e3e3e3;
-}
-
-/* Result box */
-#result {
-  margin-top: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* Floating Search Window */
-#float-search {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 350px;
-  max-height: 400px;
-  background: #fff;
-  border: 2px solid #444;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  padding: 10px;
-  display: none;
-  overflow-y: auto;
-  z-index: 9999;
-  text-align: left;
-}
-#float-search h3 {
-  margin: 5px 0;
-  font-size: 16px;
-}
-#close-search {
-  float: right;
-  cursor: pointer;
-  font-weight: bold;
-  color: red;
+@media (max-width: 640px) {
+  .container {
+    padding: 12px;
+    margin: 12px auto;
+  }
+  h1 {
+    font-size: 1.25rem;
+  }
 }
