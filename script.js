@@ -1,18 +1,9 @@
+const quizData = {'use strict';
+
 const quizData = {
   political: [
     { q: "Who wrote 'Politics'?", options: ["Plato", "Aristotle", "Locke", "Kant"], answer: "Aristotle" },
-    { q: "In which year was the Indian Constitution adopted?", options: ["1947", "1948", "1949", "1950"], answer: "1949" }
-  ],
-  maths: [
-    { q: "2 + 2 = ?", options: ["3", "4", "5", "6"], answer: "4" },
-    { q: "√16 = ?", options: ["2", "4", "6", "8"], answer: "4" }
-  ],
-  gk: [
-    { q: "Capital of France?", options: ["Berlin", "Paris", "Rome", "Madrid"], answer: "Paris" },
-    { q: "Who is the President of India (2025)?", options: ["Narendra Modi", "Droupadi Murmu", "Amit Shah", "Rahul Gandhi"], answer: "Droupadi Murmu" }
-  ]
-  ]sample2: [
-  { q: "Who supported legal theory of right by stating ‘Natural Rights are Nonsense on stilts’?", options: ["Bentham","J.S.Mill","Harold Laski","Robert Nozick"], answer: "Bentham" },
+{ q: "Who supported legal theory of right by stating ‘Natural Rights are Nonsense on stilts’?", options: ["Bentham","J.S.Mill","Harold Laski","Robert Nozick"], answer: "Bentham" },
   { q: "Which pair is Not correctly matched?", options: ["Plato- Timaeus","Machiavelli- The Golden Ass","Bentham- A Fragment on Government","Lenin- Neo-colonialism, the Highest Stage of Capitalism"], answer: "Lenin- Neo-colonialism, the Highest Stage of Capitalism" },
   { q: "Who said ‘taxation equals forced labour’?", options: ["Friedrich Hayek","Robert Nozick","Milton Friedman","John Locke"], answer: "Robert Nozick" },
   { q: "Plato describes the human mind by which of his theories?", options: ["The Allegory of cave","Theory of divided line","Theory of Forms","All the Above"], answer: "All the Above" },
@@ -86,23 +77,36 @@ const quizData = {
   { q: "In a certain code, TREE = 8422, then FREE = ?", options: ["7422","8422","7522","7622"], answer: "7422" },
   { q: "A person is facing north, then turns 90° clockwise and then 180° anticlockwise. Now he is facing?", options: ["North","South","East","West"], answer: "West" },
   { q: "If 5 men can complete a work in 20 days, how many men are required to complete the same work in 5 days?", options: ["15","20","25","10"], answer: "20" }
-]
-
+    { q: "In which year was the Indian Constitution adopted?", options: ["1947", "1948", "1949", "1950"], answer: "1949" }
+  ],
+  maths: [
+    { q: "2 + 2 = ?", options: ["3", "4", "5", "6"], answer: "4" },
+    { q: "√16 = ?", options: ["2", "4", "6", "8"], answer: "4" }
+  ],
+  gk: [
+    { q: "Capital of France?", options: ["Berlin", "Paris", "Rome", "Madrid"], answer: "Paris" },
+    { q: "Who is the President of India (2025)?", options: ["Narendra Modi", "Droupadi Murmu", "Amit Shah", "Rahul Gandhi"], answer: "Droupadi Murmu" }
+  ]
 };
-
-const params = new URLSearchParams(window.location.search);
-const subject = params.get("subject");
 
 let currentIndex = 0;
 let score = 0;
 
+const params = new URLSearchParams(window.location.search);
+const subject = params.get("subject");
+
 const container = document.getElementById("quiz-container");
 const resultBox = document.getElementById("result");
 
-if (!quizData[subject]) {
-  container.innerHTML = "<p>⚠️ Invalid subject! Please go back.</p>";
+if (!subject || !quizData[subject]) {
+  container.innerHTML = "<p>Invalid subject specified. <a href='subjects.html'>Go back to select.</a></p>";
 } else {
-  loadQuestion();
+  try {
+    loadQuestion();
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Something went wrong while loading the quiz. Please try again later.</p>";
+  }
 }
 
 function loadQuestion() {
@@ -115,18 +119,12 @@ function loadQuestion() {
   }
 
   const item = quizData[subject][currentIndex];
-  let div = document.createElement("div");
-  div.classList.add("question");
-
-  div.innerHTML =
-    `<p><b>${currentIndex + 1}. ${item.q}</b></p>` +
-    item.options
-      .map(
-        (opt) =>
-          `<button class="option-btn" onclick="checkAnswer('${opt}')">${opt}</button>`
-      )
-      .join("");
-
+  const div = document.createElement("div");
+  div.className = "question";
+  div.innerHTML = `
+    <p><b>${currentIndex + 1}. ${item.q}</b></p>
+    ${item.options.map(opt => `<button class="option-btn" onclick="checkAnswer('${opt}')">${opt}</button>`).join("")}
+  `;
   container.appendChild(div);
 }
 
@@ -146,20 +144,20 @@ function checkAnswer(selected) {
 }
 
 function showFinalResult() {
-  container.innerHTML = "";
-  resultBox.innerHTML = `<h3>🎉 Quiz Finished!</h3>
-    <p>Your Score: <b>${score}/${quizData[subject].length}</b></p>`;
+  container.innerHTML = `
+    <h3>🎉 Quiz Finished!</h3>
+    <p>Your Score: <b>${score}/${quizData[subject].length}</b></p>
+  `;
 }
 
-/* Floating search window */
 function openSearch(topic) {
   const wikiBox = document.getElementById("wiki-result");
   const googleLink = document.getElementById("google-link");
+  const floatDiv = document.getElementById("float-search");
 
-  document.getElementById("float-search").style.display = "block";
   wikiBox.innerText = "⏳ Loading info...";
-
   googleLink.href = `https://www.google.com/search?q=${encodeURIComponent(topic)}`;
+  floatDiv.style.display = "block";
 
   fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(topic)}`)
     .then(res => res.json())
@@ -167,14 +165,17 @@ function openSearch(topic) {
       if (data.extract) {
         wikiBox.innerText = data.extract;
       } else {
-        wikiBox.innerText = "No Wikipedia info found.";
+        wikiBox.innerText = "No Wikipedia summary available.";
       }
     })
     .catch(() => {
-      wikiBox.innerText = "⚠️ Could not load info.";
+      wikiBox.innerText = "Unable to load information.";
     });
 }
 
 function closeSearch() {
   document.getElementById("float-search").style.display = "none";
 }
+
+
+
