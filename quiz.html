@@ -5,26 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz | UGC Practice</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Floating window style */
+    #float-search {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 350px;
+      max-height: 400px;
+      background: #fff;
+      border: 2px solid #444;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      padding: 10px;
+      display: none;
+      overflow-y: auto;
+      z-index: 9999;
+    }
+    #float-search h3 {
+      margin: 5px 0;
+    }
+    #close-search {
+      float: right;
+      cursor: pointer;
+      font-weight: bold;
+      color: red;
+    }
+  </style>
 </head>
 <body>
   <h2 id="quiz-title">Quiz</h2>
   <div id="quiz-container"></div>
   <div id="result"></div>
 
-  <h3>Search More</h3>
-  <input type="text" id="wiki-search" placeholder="Search Wikipedia or Google...">
-  <button onclick="searchWiki()">Search Wiki</button>
-  <a id="google-link" target="_blank">Search Google</a>
-  <div id="wiki-result"></div>
+  <!-- Floating Search Window -->
+  <div id="float-search">
+    <span id="close-search" onclick="closeSearch()">✖</span>
+    <h3>Learn More</h3>
+    <div id="wiki-result">Loading...</div>
+    <p><a id="google-link" href="#" target="_blank">Search on Google</a></p>
+  </div>
 
-  <script>
-    document.getElementById("wiki-search").addEventListener("input", function () {
-      document.getElementById("google-link").href =
-        `https://www.google.com/search?q=${encodeURIComponent(this.value)}`;
-      document.getElementById("google-link").innerText =
-        `Search Google for "${this.value}"`;
-    });
-  </script>
   <script src="script.js"></script>
 </body>
 </html>
