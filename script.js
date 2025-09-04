@@ -2,6 +2,15 @@ const quizData = {
   political: [
     { q: "Who wrote 'Politics'?", options: ["Plato", "Aristotle", "Locke", "Kant"], answer: "Aristotle" },
     { q: "In which year was the Indian Constitution adopted?", options: ["1947", "1948", "1949", "1950"], answer: "1949" }
+  ],
+  maths: [
+    { q: "2 + 2 = ?", options: ["3", "4", "5", "6"], answer: "4" },
+    { q: "√16 = ?", options: ["2", "4", "6", "8"], answer: "4" }
+  ],
+  gk: [
+    { q: "Capital of France?", options: ["Berlin", "Paris", "Rome", "Madrid"], answer: "Paris" },
+    { q: "Who is the President of India (2025)?", options: ["Narendra Modi", "Droupadi Murmu", "Amit Shah", "Rahul Gandhi"], answer: "Droupadi Murmu" }
+  ]
   ]sample2: [
   { q: "Who supported legal theory of right by stating ‘Natural Rights are Nonsense on stilts’?", options: ["Bentham","J.S.Mill","Harold Laski","Robert Nozick"], answer: "Bentham" },
   { q: "Which pair is Not correctly matched?", options: ["Plato- Timaeus","Machiavelli- The Golden Ass","Bentham- A Fragment on Government","Lenin- Neo-colonialism, the Highest Stage of Capitalism"], answer: "Lenin- Neo-colonialism, the Highest Stage of Capitalism" },
@@ -79,16 +88,93 @@ const quizData = {
   { q: "If 5 men can complete a work in 20 days, how many men are required to complete the same work in 5 days?", options: ["15","20","25","10"], answer: "20" }
 ]
 
-
-  gk: [
-    { q: "Capital of France?", options: ["Berlin", "Paris", "Rome", "Madrid"], answer: "Paris" },
-    { q: "Who is the President of India (2025)?", options: ["Narendra Modi", "Droupadi Murmu", "Amit Shah", "Rahul Gandhi"], answer: "Droupadi Murmu" }
-  ]
+};
 
 const params = new URLSearchParams(window.location.search);
-const subject = params.get("subject") || "political"; // default
+const subject = params.get("subject");
+
 let currentIndex = 0;
 let score = 0;
 
 const container = document.getElementById("quiz-container");
 const resultBox = document.getElementById("result");
+
+if (!quizData[subject]) {
+  container.innerHTML = "<p>⚠️ Invalid subject! Please go back.</p>";
+} else {
+  loadQuestion();
+}
+
+function loadQuestion() {
+  container.innerHTML = "";
+  resultBox.innerText = "";
+
+  if (currentIndex >= quizData[subject].length) {
+    showFinalResult();
+    return;
+  }
+
+  const item = quizData[subject][currentIndex];
+  let div = document.createElement("div");
+  div.classList.add("question");
+
+  div.innerHTML =
+    `<p><b>${currentIndex + 1}. ${item.q}</b></p>` +
+    item.options
+      .map(
+        (opt) =>
+          `<button class="option-btn" onclick="checkAnswer('${opt}')">${opt}</button>`
+      )
+      .join("");
+
+  container.appendChild(div);
+}
+
+function checkAnswer(selected) {
+  const item = quizData[subject][currentIndex];
+
+  if (selected === item.answer) {
+    alert("✅ Correct!");
+    score++;
+  } else {
+    alert("❌ Wrong! Correct Answer: " + item.answer);
+    openSearch(item.q);
+  }
+
+  currentIndex++;
+  loadQuestion();
+}
+
+function showFinalResult() {
+  container.innerHTML = "";
+  resultBox.innerHTML = `<h3>🎉 Quiz Finished!</h3>
+    <p>Your Score: <b>${score}/${quizData[subject].length}</b></p>`;
+}
+
+/* Floating search window */
+function openSearch(topic) {
+  const wikiBox = document.getElementById("wiki-result");
+  const googleLink = document.getElementById("google-link");
+
+  document.getElementById("float-search").style.display = "block";
+  wikiBox.innerText = "⏳ Loading info...";
+
+  googleLink.href = `https://www.google.com/search?q=${encodeURIComponent(topic)}`;
+
+  fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(topic)}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.extract) {
+        wikiBox.innerText = data.extract;
+      } else {
+        wikiBox.innerText = "No Wikipedia info found.";
+      }
+    })
+    .catch(() => {
+      wikiBox.innerText = "⚠️ Could not load info.";
+    });
+}
+
+function closeSearch() {
+  document.getElementById("float-search").style.display = "none";
+}
