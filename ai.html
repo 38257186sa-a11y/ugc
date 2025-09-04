@@ -4,6 +4,18 @@
   <meta charset="UTF-8">
   <title>Ask Doubts - Gemini AI</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    textarea { width: 100%; max-width: 600px; }
+    .answer-box { 
+      border: 1px solid #ccc; 
+      padding: 10px; 
+      margin-top: 10px; 
+      background: #f9f9f9; 
+      white-space: pre-wrap;
+    }
+    button { padding: 10px 20px; margin-top: 10px; }
+  </style>
 </head>
 <body>
   <header>
@@ -12,36 +24,46 @@
   </header>
 
   <main>
-    <textarea id="question" placeholder="Type your question here..." rows="5" cols="50"></textarea><br>
+    <textarea id="question" placeholder="Type your question here..." rows="5"></textarea><br>
     <button onclick="askGemini()">Ask Gemini</button>
     <h3>Answer:</h3>
     <div id="answer" class="answer-box"></div>
   </main>
 
   <footer>
-    <a href="subjects.html">Back to Subjects</a>
+    <a href="subjects.html">⬅ Back to Subjects</a>
   </footer>
 
   <script>
-    const API_KEY = "AIzaSyA3JRLPaLi4s15nYim2XfhyO2B-5fz_XIc";  // ✅ Your key here
+    const API_KEY = "YOUR_API_KEY"; // ⚠️ Replace, don't expose in production
 
     async function askGemini() {
-      const question = document.getElementById("question").value;
+      const question = document.getElementById("question").value.trim();
+      if (!question) {
+        document.getElementById("answer").innerText = "⚠️ Please type a question.";
+        return;
+      }
 
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: question }] }]
-          })
-        }
-      );
+      document.getElementById("answer").innerText = "⏳ Thinking...";
 
-      const data = await res.json();
-      document.getElementById("answer").innerText =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: question }] }]
+            })
+          }
+        );
+
+        const data = await res.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "❌ No response.";
+        document.getElementById("answer").innerText = text;
+      } catch (err) {
+        document.getElementById("answer").innerText = "❌ Error: " + err.message;
+      }
     }
   </script>
 </body>
