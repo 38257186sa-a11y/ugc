@@ -2,24 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz | UGC Practice</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Quiz</h1>
-  </header>
+  <h2 id="quiz-title">Quiz</h2>
+  <div id="quiz-container"></div>
+  <div id="result"></div>
 
-  <main>
-    <div id="quiz-container"></div>
-    <button onclick="submitQuiz()">Submit</button>
-    <p id="result"></p>
-  </main>
+  <h3>Search More</h3>
+  <input type="text" id="wiki-search" placeholder="Search Wikipedia or Google...">
+  <button onclick="searchWiki()">Search Wiki</button>
+  <a id="google-link" target="_blank">Search Google</a>
+  <div id="wiki-result"></div>
 
-  <footer>
-    <a href="subjects.html">Back to Subjects</a>
-  </footer>
-
+  <script>
+    document.getElementById("wiki-search").addEventListener("input", function () {
+      document.getElementById("google-link").href =
+        `https://www.google.com/search?q=${encodeURIComponent(this.value)}`;
+      document.getElementById("google-link").innerText =
+        `Search Google for "${this.value}"`;
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
