@@ -1,3 +1,4 @@
+/* Global Layout */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -18,6 +19,7 @@ footer {
   background: #ddd;
 }
 
+/* Buttons */
 .btn {
   display: inline-block;
   margin: 20px;
@@ -26,21 +28,85 @@ footer {
   color: white;
   text-decoration: none;
   border-radius: 5px;
+  transition: 0.3s;
+}
+.btn:hover {
+  background: #005fa3;
 }
 
+/* Subject list */
 .subject-list {
   list-style: none;
   padding: 0;
 }
-
 .subject-list li {
   margin: 15px;
 }
 
+/* Question Card */
 .question {
-  margin: 20px;
-  padding: 10px;
+  margin: 20px auto;
+  padding: 20px;
   background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 5px #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 600px;
+  text-align: left;
+}
+.question p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Option buttons (Telegram style) */
+.option-btn {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #f4f4f4;
+  cursor: pointer;
+  text-align: left;
+  font-size: 16px;
+  transition: 0.2s;
+}
+.option-btn:hover {
+  background: #e3e3e3;
+}
+
+/* Result box */
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Floating Search Window */
+#float-search {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 350px;
+  max-height: 400px;
+  background: #fff;
+  border: 2px solid #444;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  padding: 10px;
+  display: none;
+  overflow-y: auto;
+  z-index: 9999;
+  text-align: left;
+}
+#float-search h3 {
+  margin: 5px 0;
+  font-size: 16px;
+}
+#close-search {
+  float: right;
+  cursor: pointer;
+  font-weight: bold;
+  color: red;
 }
